@@ -39,3 +39,41 @@ export function validatorAction(context, itemBody) {
       }
     });
 }
+
+export function createAction(context, itemBody) {
+  console.log(itemBody);
+  api
+    .post("/api/item/new", itemBody)
+    .then(() => {
+      Notify.create({
+        color: "green-5",
+        textColor: "white",
+        icon: "check",
+        message: "Item registrado com sucesso!",
+        position: "top-right",
+        timeout: 3000,
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+      Notify.create({
+        color: "red-5",
+        textColor: "white",
+        icon: "priority_high",
+        message: "Erro, tente realizar outro cadastro cadastro",
+        position: "top-right",
+        timeout: 3000,
+      });
+    });
+}
+
+export async function getStatusAction(context) {
+  api
+    .get("/api/status", options)
+    .then((response) => {
+      context.commit("getMutation", response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}

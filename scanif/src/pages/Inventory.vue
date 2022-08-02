@@ -8,7 +8,7 @@
         <q-input v-model="form.tomb_antigo" filled hint="Tombamento Antigo" />
       </q-card-section>
       <q-card-section color="primary">
-        <q-select v-model="form.localidade" filled hint="Localidade" />
+        <q-input v-model="form.localidade" filled hint="Localidade" />
       </q-card-section>
       <q-card-section color="primary">
         <q-input v-model="form.situacao" filled hint="Situação" />
@@ -59,8 +59,8 @@ export default {
     //   toRefs(form);
 
     const sendItem = () => {
-      console.log(form);
       $store.dispatch("Item/validatorAction", form);
+      form.tombamento = "";
     };
 
     return { form, sendItem, controlDialog, showModal };

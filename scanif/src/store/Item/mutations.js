@@ -5,3 +5,9 @@ export function fillItem(state, data) {
   state.validatorItem.tombamento = data.tombamento;
   state.validatorItem.localidade = data.localidade;
 }
+
+export function getMutation(state, response) {
+  response.map((item) => {
+    state.statusList.push((value = item.id), (label = item.nome));
+  });
+}
