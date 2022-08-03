@@ -11,3 +11,8 @@ export function getMutation(state, response) {
     state.statusList.push((value = item.id), (label = item.nome));
   });
 }
+
+export function getValidItemsMutation(state, response) {
+  console.log(response);
+  state.items = response;
+}

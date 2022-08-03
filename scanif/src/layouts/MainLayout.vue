@@ -54,7 +54,7 @@ const linksList = [
     title: "Relatórios",
     caption: "Visualizar items registrados",
     icon: "summarize",
-    link: "/#/.*",
+    link: "/#/relatorios",
   },
   {
     title: "Items cadastrados do SIPAC",

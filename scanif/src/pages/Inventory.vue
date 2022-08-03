@@ -1,20 +1,36 @@
 <template>
   <q-page padding>
     <q-card>
+      <q-card-section class="q-mt-sm center">
+        <div class="text-h6 absolute-center text-black">
+          Validação dos itens
+        </div>
+      </q-card-section>
       <q-card-section class="col-3 col-sm-6">
-        <q-input v-model="form.tombamento" filled hint="Tombamento" />
+        <q-input
+          clearable
+          :rules="[(val) => !!val || 'Campo obrigatório']"
+          v-model="form.tombamento"
+          filled
+          hint="Tombamento"
+        />
       </q-card-section>
       <q-card-section>
-        <q-input v-model="form.tomb_antigo" filled hint="Tombamento Antigo" />
+        <q-input
+          v-model="form.tomb_antigo"
+          clearable
+          filled
+          hint="Tombamento Antigo"
+        />
       </q-card-section>
       <q-card-section color="primary">
-        <q-input v-model="form.localidade" filled hint="Localidade" />
+        <q-input clearable v-model="form.localidade" filled hint="Localidade" />
       </q-card-section>
       <q-card-section color="primary">
-        <q-input v-model="form.situacao" filled hint="Situação" />
+        <q-input v-model="form.situacao" clearable filled hint="Situação" />
       </q-card-section>
       <q-card-section class="col-3 col-sm-6">
-        <q-input v-model="form.estado" filled hint="Estado do Bem" />
+        <q-input v-model="form.estado" filled clearable hint="Estado do Bem" />
       </q-card-section>
       <q-card-actions class="on-right q-mt-md">
         <q-btn color="primary" @click="sendItem()"> Salvar </q-btn>
@@ -25,10 +41,13 @@
       @closeDialog="controlDialog"
       :componentStore="'item'"
     />
+    <q-page-sticky position="bottom-right" :offset="[20, 95]">
+      <q-btn fab icon="qr_code_scanner" color="positive" />
+    </q-page-sticky>
     <q-page-sticky
       @click="controlDialog()"
       position="bottom-right"
-      :offset="[18, 18]"
+      :offset="[18, 25]"
     >
       <q-btn fab icon="create_new_folder" color="positive" />
     </q-page-sticky>

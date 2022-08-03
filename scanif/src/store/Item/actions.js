@@ -42,9 +42,12 @@ export function validatorAction(context, itemBody) {
 
 export function createAction(context, itemBody) {
   console.log(itemBody);
+
   api
     .post("/api/item/new", itemBody)
-    .then(() => {
+    .then((response) => {
+      console.log(response);
+
       Notify.create({
         color: "green-5",
         textColor: "white",
@@ -72,6 +75,17 @@ export async function getStatusAction(context) {
     .get("/api/status", options)
     .then((response) => {
       context.commit("getMutation", response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+export async function getValidItemsAction(context) {
+  api
+    .get("/api/item")
+    .then((response) => {
+      context.commit("getValidItemsMutation", response.data);
     })
     .catch((error) => {
       console.log(error);

@@ -1,7 +1,6 @@
 <template>
   <q-dialog v-model="dialog" persistent :maximized="true">
     <q-card class="bg-positive text-white">
-      {{ item }}
       <q-bar>
         <q-space />
         <q-btn dense flat icon="close" @click="$emit('closeDialog')">
@@ -26,6 +25,9 @@
                 v-model="item.tombamento"
                 label="Tombamento"
                 :dense="dense"
+                mask="NNNNNNNNNN"
+                :rules="[(val) => !!val || 'Campo obrigatório']"
+                clearable
               />
               <q-select
                 outlined
@@ -35,6 +37,8 @@
                 label="Status"
                 :dense="dense"
                 :options="statusOptions"
+                clearable
+                :rules="[(val) => !!val || 'Campo obrigatório']"
               />
 
               <q-input
@@ -42,6 +46,7 @@
                 v-model="item.localidade"
                 label="Localidade"
                 :dense="dense"
+                clearable
               />
 
               <q-input
@@ -49,42 +54,51 @@
                 v-model="item.denominacao"
                 label="Denominação"
                 :dense="dense"
+                clearable
               />
               <q-input
                 outlined
                 v-model="item.termo"
                 label="Termo"
                 :dense="dense"
+                clearable
               />
               <q-input
                 outlined
                 v-model="item.valor"
                 label="Valor(R$)"
+                mask="R$"
+                type="number"
                 :dense="dense"
+                clearable
               />
               <q-input
                 outlined
                 v-model="item.tomb_antigo"
                 label="Tombamento antigo"
                 :dense="dense"
+                clearable
               />
               <q-input
                 outlined
                 v-model="item.estado"
                 label="Estado do bem"
                 :dense="dense"
+                clearable
               />
               <q-input
                 outlined
                 v-model="item.situacao"
                 label="Situação"
                 :dense="dense"
+                clearable
               />
               <q-input
                 outlined
                 v-model="item.n_serie"
                 label="Número de Série"
                 :dense="dense"
+                clearable
               />
 
               <q-input
@@ -92,6 +106,7 @@
                 v-model="item.observacao"
                 label="Observação"
                 :dense="dense"
+                clearable
               />
             </div>
           </div>
@@ -133,6 +148,7 @@ export default {
       denominacao: "",
       valor: "",
       n_serie: "",
+      termo: "",
       observacao: "",
       status_id: "",
     });
