@@ -13,6 +13,7 @@ export function getMutation(state, response) {
 }
 
 export function getValidItemsMutation(state, response) {
-  console.log(response);
+  state.items = [];
+
   state.items = response;
 }

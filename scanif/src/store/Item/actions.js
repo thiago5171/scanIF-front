@@ -91,3 +91,14 @@ export async function getValidItemsAction(context) {
       console.log(error);
     });
 }
+
+export async function getValidItemsByStatusAction(context, id) {
+  api
+    .get(`/api/item//${id}/status`)
+    .then((response) => {
+      context.commit("getValidItemsMutation", response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}

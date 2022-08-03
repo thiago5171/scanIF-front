@@ -41,7 +41,11 @@
       @closeDialog="controlDialog"
       :componentStore="'item'"
     />
-    <q-page-sticky position="bottom-right" :offset="[20, 95]">
+    <q-page-sticky
+      class="touch-only"
+      position="bottom-right"
+      :offset="[20, 95]"
+    >
       <q-btn fab icon="qr_code_scanner" color="positive" />
     </q-page-sticky>
     <q-page-sticky

@@ -1,7 +1,8 @@
+4
 <template>
   <q-page padding>
     <q-card>
-      <q-card-section class="q-mt-sm center">
+      <q-card-section class="q-mt-xl" style="min-height: 60px">
         <div class="text-h6 absolute-center text-black">
           Visualização de relatórios
         </div>
@@ -11,13 +12,17 @@
         dense
         :rows="rows"
         :columns="columns"
-        v-model:pagination="pagination"
+        :filter="filter"
+        :v-model:pagination="pagination"
         no-data-label="Não existem dados disponíveis neste momento"
         no-results-label="Dados solicitados não encontrados!"
       >
         <template v-slot:top-left>
           <q-input
             dense
+            emit-value
+            map-options
+            outlined
             debounce="300"
             v-model="filter"
             placeholder="Pesquisar"
@@ -28,7 +33,23 @@
           </q-input>
         </template>
         <template v-slot:top-right="props">
-          <q-select></q-select>
+          <q-select
+            style="min-width: 250px"
+            class="justify-start"
+            outlined
+            dense
+            v-model="status"
+            :options="statusOptions"
+            label="Status do item"
+          >
+            <template v-if="status" v-slot:append>
+              <q-icon
+                name="cancel"
+                @click.stop.prevent="status = null"
+                class="cursor-pointer"
+              />
+            </template>
+          </q-select>
           <q-btn
             color="primary"
             icon="archive"
@@ -112,13 +133,17 @@ function wrapCsvValue(val, formatFn) {
 
   return `"${formatted}"`;
 }
-import { ref, computed } from "vue";
+import { ref, computed, watch, reactive, toRefs } from "vue";
 import { useStore } from "vuex";
+import { exportFile, useQuasar } from "quasar";
 export default {
   setup() {
     const $store = useStore();
 
     $store.dispatch("Item/getValidItemsAction");
+    const statusOptions = computed({
+      get: () => $store.state.Item.statusList,
+    });
 
     const columns = computed({
       get: () => $store.state.Item.columnsReports,
@@ -126,14 +151,29 @@ export default {
     const rows = computed({
       get: () => $store.state.Item.items,
     });
-    console.log(rows);
+
+    const status = ref("");
+    watch(
+      () => status.value,
+      (val, valPrev) => {
+        $store.dispatch("Item/getValidItemsAction", val.value);
+        const rows = computed({
+          get: () => $store.state.Item.items,
+        });
+      }
+    );
+
     const pagination = ref({
-      sortBy: "desc",
-      descending: false,
       page: 2,
-      rowsPerPage: 3,
+      rowsPerPage: 10,
       // rowsNumber: xx if getting data from a server
     });
+
+    const references = reactive({
+      filter: "",
+    });
+
+    let { filter } = toRefs(references);
 
     const exportTable = () => {
       // naive encoding to csv format
@@ -169,7 +209,9 @@ export default {
       exportTable,
       columns,
       rows,
-
+      filter,
+      statusOptions,
+      status,
       pagesNumber: computed(() => {
         return Math.ceil(rows.length / pagination.value.rowsPerPage);
       }),
