@@ -17,3 +17,12 @@ export function getValidItemsMutation(state, response) {
 
   state.items = response;
 }
+export function getNotValidItemsMutation(state, response) {
+  state.withoutValidate = [];
+
+  state.withoutValidate = response;
+}
+
+export function clearItems(state) {
+  state.items = [];
+}

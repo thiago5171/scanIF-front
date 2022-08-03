@@ -1,92 +1,172 @@
 <template>
   <q-page padding>
     <q-card>
-      <q-card-section class="q-mt-sm center">
+      <q-card-section class="q-mt-xl" style="min-height: 90px">
         <div class="text-h6 absolute-center text-black">
-          Validação dos itens
+          <p>
+            Items do SIPAC que ainda não foram localizados no processo de
+            inventário
+          </p>
         </div>
       </q-card-section>
-      <q-card-section class="col-3 col-sm-6">
-        <q-input
-          clearable
-          :rules="[(val) => !!val || 'Campo obrigatório']"
-          v-model="form.tombamento"
-          filled
-          hint="Tombamento"
-        />
-      </q-card-section>
-      <q-card-section>
-        <q-input
-          v-model="form.tomb_antigo"
-          clearable
-          filled
-          hint="Tombamento Antigo"
-        />
-      </q-card-section>
-      <q-card-section color="primary">
-        <q-input clearable v-model="form.localidade" filled hint="Localidade" />
-      </q-card-section>
-      <q-card-section color="primary">
-        <q-input v-model="form.situacao" clearable filled hint="Situação" />
-      </q-card-section>
-      <q-card-section class="col-3 col-sm-6">
-        <q-input v-model="form.estado" filled clearable hint="Estado do Bem" />
-      </q-card-section>
-      <q-card-actions class="on-right q-mt-md">
-        <q-btn color="primary" @click="sendItem()"> Salvar </q-btn>
-      </q-card-actions>
+      <q-separator />
+      <q-table
+        dense
+        :rows="rows"
+        :columns="columns"
+        :filter="filter"
+        :v-model:pagination="pagination"
+        no-data-label="Não existem dados disponíveis neste momento"
+        no-results-label="Dados solicitados não encontrados!"
+      >
+        <template v-slot:top-left>
+          <q-input
+            dense
+            emit-value
+            map-options
+            outlined
+            debounce="300"
+            v-model="filter"
+            placeholder="Pesquisar"
+          >
+            <template v-slot:append>
+              <q-icon name="search" />
+            </template>
+          </q-input>
+        </template>
+        <template v-slot:top-right="props">
+          <q-btn
+            flat
+            round
+            dense
+            :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
+            @click="props.toggleFullscreen"
+            class="q-ml-md"
+          />
+        </template>
+        <template v-slot:pagination="scope">
+          <q-btn
+            v-if="scope.pagesNumber > 2"
+            icon="first_page"
+            color="grey-8"
+            round
+            dense
+            flat
+            :disable="scope.isFirstPage"
+            @click="scope.firstPage"
+          />
+
+          <q-btn
+            icon="chevron_left"
+            color="grey-8"
+            round
+            dense
+            flat
+            :disable="scope.isFirstPage"
+            @click="scope.prevPage"
+          />
+
+          <q-btn
+            icon="chevron_right"
+            color="grey-8"
+            round
+            dense
+            flat
+            :disable="scope.isLastPage"
+            @click="scope.nextPage"
+          />
+
+          <q-btn
+            v-if="scope.pagesNumber > 2"
+            icon="last_page"
+            color="grey-8"
+            round
+            dense
+            flat
+            :disable="scope.isLastPage"
+            @click="scope.lastPage"
+          />
+        </template>
+      </q-table>
     </q-card>
-    <create
-      :modal="showModal"
-      @closeDialog="controlDialog"
-      :componentStore="'item'"
-    />
-    <q-page-sticky
-      class="touch-only"
-      position="bottom-right"
-      :offset="[20, 95]"
-    >
-      <q-btn fab icon="qr_code_scanner" color="positive" />
-    </q-page-sticky>
-    <q-page-sticky
-      @click="controlDialog()"
-      position="bottom-right"
-      :offset="[18, 25]"
-    >
-      <q-btn fab icon="create_new_folder" color="positive" />
-    </q-page-sticky>
+    <p>{{ error }}</p>
   </q-page>
+  <qrcode-stream @init="onInit"></qrcode-stream>
 </template>
 
 <script>
+import { ref, computed, reactive, toRefs } from "vue";
 import { useStore } from "vuex";
-import create from "components/Item/create.vue";
-import { defineComponent, ref, reactive, toRefs } from "vue";
+import { QrcodeStream } from "vue3-qrcode-reader";
+
 export default {
-  components: { create },
+  data() {
+    return {
+      error: "",
+    };
+  },
+  components: {
+    QrcodeStream,
+  },
+  methods: {
+    async onInit(promise) {
+      try {
+        const { capabilities } = await promise;
+
+        // successfully initialized
+      } catch (error) {
+        if (error.name === "NotAllowedError") {
+          this.error = "user denied camera access permisson";
+        } else if (error.name === "NotFoundError") {
+          this.error = "no suitable camera device installed";
+        } else if (error.name === "NotSupportedError") {
+          this.error = "page is not served over HTTPS (or localhost)";
+        } else if (error.name === "NotReadableError") {
+          this.error = "maybe camera is already in use";
+        } else if (error.name === "OverconstrainedError") {
+          this.error =
+            "did you requested the front camera although there is none?";
+        } else if (error.name === "StreamApiNotSupportedError") {
+          this.error = "browser seems to be lacking features";
+        }
+      } finally {
+        // hide loading indicator
+      }
+    },
+  },
   setup() {
     const $store = useStore();
-    let showModal = ref(false);
 
-    let controlDialog = () => {
-      showModal.value = !showModal.value;
-    };
-    const form = reactive({
-      tombamento: "",
-      tomb_antigo: "",
-      situacao: "EFETIVADO",
-      estado: "Em uso",
-      localidade: "",
+    $store.dispatch("Item/getNotValidItems");
+
+    const columns = computed({
+      get: () => $store.state.Item.columnsReports,
     });
-    // let { tombamento, tomb_antigo, situacao, localidade, estado } =
-    //   toRefs(form);
+    const rows = computed({
+      get: () => $store.state.Item.withoutValidate,
+    });
 
-    const sendItem = () => {
-      $store.dispatch("Item/validatorAction", form);
-      form.tombamento = "";
+    const pagination = ref({
+      page: 2,
+      rowsPerPage: 10,
+      // rowsNumber: xx if getting data from a server
+    });
+
+    const references = reactive({
+      filter: "",
+    });
+
+    let { filter } = toRefs(references);
+
+    return {
+      pagination,
+      columns,
+      rows,
+      filter,
+      pagesNumber: computed(() => {
+        return Math.ceil(rows.length / pagination.value.rowsPerPage);
+      }),
     };
-
-    return { form, sendItem, controlDialog, showModal };
   },
 };
 </script>

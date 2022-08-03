@@ -93,10 +93,22 @@ export async function getValidItemsAction(context) {
 }
 
 export async function getValidItemsByStatusAction(context, id) {
+  context.commit("clearItems");
+
   api
     .get(`/api/item//${id}/status`)
     .then((response) => {
       context.commit("getValidItemsMutation", response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+export async function getNotValidItems(context) {
+  api
+    .get(`/api/item/find/all`)
+    .then((response) => {
+      context.commit("getNotValidItemsMutation", response.data);
     })
     .catch((error) => {
       console.log(error);

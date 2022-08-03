@@ -156,7 +156,14 @@ export default {
     watch(
       () => status.value,
       (val, valPrev) => {
-        $store.dispatch("Item/getValidItemsAction", val.value);
+        if (val != null) {
+          console.log(1);
+          $store.dispatch("Item/getValidItemsByStatusAction", val.value);
+        } else {
+          console.log(2);
+
+          $store.dispatch("Item/getValidItemsAction");
+        }
         const rows = computed({
           get: () => $store.state.Item.items,
         });

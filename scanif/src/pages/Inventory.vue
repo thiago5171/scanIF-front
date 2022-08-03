@@ -36,13 +36,11 @@
         <q-btn color="primary" @click="sendItem()"> Salvar </q-btn>
       </q-card-actions>
     </q-card>
-    <create
-      :modal="showModal"
-      @closeDialog="controlDialog"
-      :componentStore="'item'"
-    />
+    <create :modal="showModal" @closeDialog="controlDialog" />
+    <QrReader :modal="showModalQR" @closeDialog="controlDialogQR" />
+
     <q-page-sticky
-      class="touch-only"
+      @click="controlDialogQR()"
       position="bottom-right"
       :offset="[20, 95]"
     >
@@ -61,15 +59,20 @@
 <script>
 import { useStore } from "vuex";
 import create from "components/Item/create.vue";
+import QrReader from "components/Item/QrReader.vue";
 import { defineComponent, ref, reactive, toRefs } from "vue";
 export default {
-  components: { create },
+  components: { create, QrReader },
   setup() {
     const $store = useStore();
     let showModal = ref(false);
+    let showModalQR = ref(false);
 
     let controlDialog = () => {
       showModal.value = !showModal.value;
+    };
+    let controlDialogQR = () => {
+      showModalQR.value = !showModalQR.value;
     };
     const form = reactive({
       tombamento: "",
@@ -86,7 +89,14 @@ export default {
       form.tombamento = "";
     };
 
-    return { form, sendItem, controlDialog, showModal };
+    return {
+      form,
+      sendItem,
+      controlDialog,
+      controlDialogQR,
+      showModal,
+      showModalQR,
+    };
   },
 };
 </script>

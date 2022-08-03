@@ -60,7 +60,13 @@ const linksList = [
     title: "Items cadastrados do SIPAC",
     caption: "Listagem de itens para comparação",
     icon: "drive_file_move_outline",
-    link: "/#/.*",
+    link: "/#/items-SIPAC",
+  },
+  {
+    title: "Cadastrar items do SIPAC",
+    caption: "Listagem de itens para comparação",
+    icon: "add_box",
+    link: "/#/cadastro/items",
   },
 ];
 export default defineComponent({
