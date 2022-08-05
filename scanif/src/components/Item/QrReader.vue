@@ -6,7 +6,7 @@
   >
     <q-bar>
       <q-space />
-      <q-btn dense flat icon="close" @click="$emit('closeDialog')">
+      <q-btn dense flat icon="close" @click="$emit(passEvent(decodeString))">
         <q-tooltip class="bg-white text-white">Fechar</q-tooltip>
       </q-btn>
     </q-bar>
@@ -18,11 +18,14 @@
 </template>
 
 <script>
+import { Notify } from "quasar";
+
 import { QrcodeStream } from "vue3-qrcode-reader";
 import { computed, reactive } from "vue";
 export default {
   props: ["modal"],
   emits: ["closeDialog"],
+
   data(props) {
     let dialog = computed(() => {
       return props.modal;
@@ -37,32 +40,17 @@ export default {
     QrcodeStream,
   },
   methods: {
-    async onInit(promise) {
-      try {
-        const { capabilities } = await promise;
+    passEvent(decodeString) {
+      this.$emit("tombamento", decodeString);
 
-        // successfully initialized
-      } catch (error) {
-        if (error.name === "NotAllowedError") {
-          this.error = "Permissão da camera negada";
-        } else if (error.name === "NotFoundError") {
-          this.error = "Nenhuma camera instalada neste dispositivo";
-        } else if (error.name === "NotSupportedError") {
-          this.error = "page is not served over HTTPS (or localhost)";
-        } else if (error.name === "NotReadableError") {
-          this.error = "Talvez sua camera já esteja em uso";
-        } else if (error.name === "OverconstrainedError") {
-          this.error =
-            "did you requested the front camera although there is none?";
-        } else if (error.name === "StreamApiNotSupportedError") {
-          this.error = "browser seems to be lacking features";
-        }
-      } finally {
-        // hide loading indicator
-      }
+      this.$emit("closeDialog");
+    },
+    async onInit(promise) {
+      s;
     },
     onDecode(decodeString) {
       this.decodeString = decodeString;
+      return this.passEvent(decodeString);
     },
   },
 };

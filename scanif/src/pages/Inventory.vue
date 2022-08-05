@@ -37,7 +37,11 @@
       </q-card-actions>
     </q-card>
     <create :modal="showModal" @closeDialog="controlDialog" />
-    <QrReader :modal="showModalQR" @closeDialog="controlDialogQR" />
+    <QrReader
+      :modal="showModalQR"
+      @closeDialog="controlDialogQR"
+      @tombamento="getTomb($event)"
+    />
 
     <q-page-sticky
       @click="controlDialogQR()"
@@ -60,9 +64,15 @@
 import { useStore } from "vuex";
 import create from "components/Item/create.vue";
 import QrReader from "components/Item/QrReader.vue";
-import { defineComponent, ref, reactive, toRefs } from "vue";
+import { ref, reactive } from "vue";
 export default {
   components: { create, QrReader },
+  methods: {
+    getTomb(value) {
+      console.log(value);
+      this.form.tombamento = value;
+    },
+  },
   setup() {
     const $store = useStore();
     let showModal = ref(false);
@@ -91,6 +101,7 @@ export default {
 
     return {
       form,
+      tombamentoQR: ref(""),
       sendItem,
       controlDialog,
       controlDialogQR,
