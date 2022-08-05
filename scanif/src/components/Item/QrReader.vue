@@ -1,20 +1,21 @@
 <template>
-  <q-dialog
-    v-model="dialog"
-    persistent
-    style="max-width: 100px; max-height: 100px"
-  >
-    <q-bar>
-      <q-space />
-      <q-btn dense flat icon="close" @click="$emit(passEvent(decodeString))">
-        <q-tooltip class="bg-white text-white">Fechar</q-tooltip>
-      </q-btn>
-    </q-bar>
-    <p>{{ error }}</p>
-    <p>{{ decodeString }}</p>
+  <div style="width: 10050px; height: 200px">
+    <q-dialog v-model="dialog" persistent>
+      <q-bar>
+        <q-space />
+        <q-btn dense flat icon="close" @click="$emit(passEvent(decodeString))">
+        </q-btn>
+      </q-bar>
+      <p>{{ error }}</p>
+      <p>{{ decodeString }}</p>
 
-    <qrcode-stream @init="onInit" @decode="onDecode"></qrcode-stream>
-  </q-dialog>
+      <qrcode-stream
+        class="q-y-sm"
+        @init="onInit"
+        @decode="onDecode"
+      ></qrcode-stream>
+    </q-dialog>
+  </div>
 </template>
 
 <script>
@@ -41,8 +42,9 @@ export default {
   },
   methods: {
     passEvent(decodeString) {
-      this.$emit("tombamento", decodeString);
-
+      if (decodeString != "") {
+        this.$emit("tombamento", decodeString);
+      }
       this.$emit("closeDialog");
     },
     async onInit(promise) {
@@ -54,7 +56,7 @@ export default {
         if (error.name === "NotAllowedError") {
           this.error = "Permissão da camera negada";
         } else if (error.name === "NotFoundError") {
-          this.$emit("closeDialog");
+          // this.$emit("closeDialog");
           Notify.create({
             color: "red-5",
             textColor: "white",
@@ -64,7 +66,7 @@ export default {
             timeout: 3000,
           });
         } else if (error.name === "NotSupportedError") {
-          this.$emit("closeDialog");
+          //   this.$emit("closeDialog");
           Notify.create({
             color: "red-5",
             textColor: "white",
@@ -74,7 +76,7 @@ export default {
             timeout: 3000,
           });
         } else if (error.name === "NotReadableError") {
-          this.$emit("closeDialog");
+          // this.$emit("closeDialog");
           Notify.create({
             color: "red-5",
             textColor: "white",
@@ -84,7 +86,7 @@ export default {
             timeout: 3000,
           });
         } else if (error.name === "OverconstrainedError") {
-          this.$emit("closeDialog");
+          // this.$emit("closeDialog");
           Notify.create({
             color: "red-5",
             textColor: "white",
@@ -94,7 +96,7 @@ export default {
             timeout: 3000,
           });
         } else if (error.name === "StreamApiNotSupportedError") {
-          this.$emit("closeDialog");
+          // this.$emit("closeDialog");
 
           Notify.create({
             color: "red-5",
@@ -116,3 +118,4 @@ export default {
   },
 };
 </script>
+<!-- <q-tooltip class="bg-white text-white">Fechar</q-tooltip> -->
