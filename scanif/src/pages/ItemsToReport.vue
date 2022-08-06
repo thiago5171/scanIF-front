@@ -1,8 +1,8 @@
 <template>
   <q-page padding>
     <q-card>
-      <q-card-section class="q-mt-xl" style="min-height: 90px">
-        <div class="text-h6 absolute-center text-black">
+      <q-card-section class="q-mt-xl">
+        <div class="text-h6 text-center text-black">
           <p>
             Items do SIPAC que ainda não foram localizados no processo de
             inventário
@@ -91,49 +91,13 @@
     </q-card>
     <p>{{ error }}</p>
   </q-page>
-  <qrcode-stream @init="onInit"></qrcode-stream>
 </template>
 
 <script>
 import { ref, computed, reactive, toRefs } from "vue";
 import { useStore } from "vuex";
-import { QrcodeStream } from "vue3-qrcode-reader";
 
 export default {
-  data() {
-    return {
-      error: "",
-    };
-  },
-  components: {
-    QrcodeStream,
-  },
-  methods: {
-    async onInit(promise) {
-      try {
-        const { capabilities } = await promise;
-
-        // successfully initialized
-      } catch (error) {
-        if (error.name === "NotAllowedError") {
-          this.error = "user denied camera access permisson";
-        } else if (error.name === "NotFoundError") {
-          this.error = "no suitable camera device installed";
-        } else if (error.name === "NotSupportedError") {
-          this.error = "page is not served over HTTPS (or localhost)";
-        } else if (error.name === "NotReadableError") {
-          this.error = "maybe camera is already in use";
-        } else if (error.name === "OverconstrainedError") {
-          this.error =
-            "did you requested the front camera although there is none?";
-        } else if (error.name === "StreamApiNotSupportedError") {
-          this.error = "browser seems to be lacking features";
-        }
-      } finally {
-        // hide loading indicator
-      }
-    },
-  },
   setup() {
     const $store = useStore();
 

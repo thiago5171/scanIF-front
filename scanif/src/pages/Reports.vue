@@ -3,7 +3,7 @@
   <q-page padding>
     <q-card>
       <q-card-section class="q-mt-xl" style="min-height: 60px">
-        <div class="text-h6 absolute-center text-black">
+        <div class="text-h6 text-center text-black">
           Visualização de relatórios
         </div>
       </q-card-section>
@@ -19,6 +19,7 @@
       >
         <template v-slot:top-left>
           <q-input
+            class="q-pt-sm"
             dense
             emit-value
             map-options
@@ -34,8 +35,8 @@
         </template>
         <template v-slot:top-right="props">
           <q-select
-            style="min-width: 250px"
-            class="justify-start"
+            style="min-width: 250px; position: relative"
+            class="q-pt-sm q-pb-sm justify-start"
             outlined
             dense
             v-model="status"
@@ -51,7 +52,7 @@
             </template>
           </q-select>
           <q-btn
-            color="primary"
+            color="positive"
             icon="archive"
             label="Exportar"
             no-caps

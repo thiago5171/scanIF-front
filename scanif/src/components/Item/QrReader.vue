@@ -1,21 +1,26 @@
 <template>
-  <div style="width: 10050px; height: 200px">
-    <q-dialog v-model="dialog" persistent>
-      <q-bar>
-        <q-space />
-        <q-btn dense flat icon="close" @click="$emit(passEvent(decodeString))">
-        </q-btn>
-      </q-bar>
-      <p>{{ error }}</p>
-      <p>{{ decodeString }}</p>
+  <q-dialog v-model="dialog" persistent>
+    <q-bar style="background-color: white">
+      <q-btn
+        dense
+        style="background-color: white"
+        flat
+        icon="close"
+        @click="$emit(passEvent(decodeString))"
+      >
+      </q-btn>
+    </q-bar>
 
-      <qrcode-stream
-        class="q-y-sm"
-        @init="onInit"
-        @decode="onDecode"
-      ></qrcode-stream>
-    </q-dialog>
-  </div>
+    <qrcode-stream
+      class="shadow-2 rounded-borders"
+      @init="onInit"
+      @decode="onDecode"
+    >
+      <h6 class="text-center" style="color: azure">
+        Aponte a câmera para o <br />QR code
+      </h6>
+    </qrcode-stream>
+  </q-dialog>
 </template>
 
 <script>

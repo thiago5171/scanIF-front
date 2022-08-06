@@ -20,7 +20,8 @@
     "vuex": "^4.0.1"
   },
   "devDependencies": {
-    "@quasar/app-webpack": "^3.0.0"
+    "@quasar/app-webpack": "^3.0.0",
+    "formdata-json": "^1.0.0"
   },
   "browserslist": [
     "last 10 Chrome versions",

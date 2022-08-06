@@ -2950,6 +2950,11 @@ fork-ts-checker-webpack-plugin@6.5.0:
     semver "^7.3.2"
     tapable "^1.0.0"
 
+formdata-json@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/formdata-json/-/formdata-json-1.0.0.tgz"
+  integrity sha512-10fKFOffZ2Vbrh2ASGizRtG8n6PoHYDfh57ihbNNFM/5/UTAfwJnSpy0scX8pzzWlXCLdhhY4DJRQGn20O7ULQ==
+
 forwarded@0.2.0:
   version "0.2.0"
   resolved "https://registry.npmjs.org/forwarded/-/forwarded-0.2.0.tgz"

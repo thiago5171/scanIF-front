@@ -11,9 +11,7 @@
       <div class="q-pa-sm">
         <q-card class="q-m-sm">
           <q-card-section class="q-mt-sm center">
-            <div class="text-h6 absolute-center text-black">
-              Registro de item
-            </div>
+            <div class="text-h6 text-center text-black">Registro de item</div>
           </q-card-section>
           <div class="q-pa-md">
             <div

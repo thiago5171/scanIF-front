@@ -1,10 +1,8 @@
 <template>
   <q-page padding>
     <q-card>
-      <q-card-section class="q-mt-sm center">
-        <div class="text-h6 absolute-center text-black">
-          Validação dos itens
-        </div>
+      <q-card-section class="q-mt-sm">
+        <div class="text-h6 text-center text-black">Validação dos itens</div>
       </q-card-section>
       <q-card-section class="col-3 col-sm-6">
         <q-input
@@ -46,14 +44,14 @@
     <q-page-sticky
       @click="controlDialogQR()"
       position="bottom-right"
-      :offset="[20, 95]"
+      :offset="[15, 74]"
     >
       <q-btn fab icon="qr_code_scanner" color="positive" />
     </q-page-sticky>
     <q-page-sticky
       @click="controlDialog()"
       position="bottom-right"
-      :offset="[18, 25]"
+      :offset="[15, 13]"
     >
       <q-btn fab icon="create_new_folder" color="positive" />
     </q-page-sticky>

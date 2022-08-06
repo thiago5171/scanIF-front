@@ -16,6 +16,10 @@ const routes = [
         path: "/items-SIPAC",
         component: () => import("src/pages/ItemsToReport.vue"),
       },
+      {
+        path: "/gerenciamento/items",
+        component: () => import("src/pages/ManagerItem.vue"),
+      },
     ],
   },
 
