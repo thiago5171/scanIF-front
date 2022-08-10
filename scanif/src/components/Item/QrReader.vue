@@ -55,13 +55,11 @@ export default {
     async onInit(promise) {
       try {
         const { capabilities } = await promise;
-
-        // successfully initialized
       } catch (error) {
         if (error.name === "NotAllowedError") {
           this.error = "Permissão da camera negada";
         } else if (error.name === "NotFoundError") {
-          // this.$emit("closeDialog");
+          this.$emit("closeDialog");
           Notify.create({
             color: "red-5",
             textColor: "white",
@@ -71,7 +69,7 @@ export default {
             timeout: 3000,
           });
         } else if (error.name === "NotSupportedError") {
-          //   this.$emit("closeDialog");
+          this.$emit("closeDialog");
           Notify.create({
             color: "red-5",
             textColor: "white",
@@ -81,7 +79,7 @@ export default {
             timeout: 3000,
           });
         } else if (error.name === "NotReadableError") {
-          // this.$emit("closeDialog");
+          this.$emit("closeDialog");
           Notify.create({
             color: "red-5",
             textColor: "white",
@@ -91,7 +89,7 @@ export default {
             timeout: 3000,
           });
         } else if (error.name === "OverconstrainedError") {
-          // this.$emit("closeDialog");
+          this.$emit("closeDialog");
           Notify.create({
             color: "red-5",
             textColor: "white",
@@ -101,7 +99,7 @@ export default {
             timeout: 3000,
           });
         } else if (error.name === "StreamApiNotSupportedError") {
-          // this.$emit("closeDialog");
+          this.$emit("closeDialog");
 
           Notify.create({
             color: "red-5",
